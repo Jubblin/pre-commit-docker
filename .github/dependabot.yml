@@ -5,5 +5,5 @@ updates:
   schedule:
     interval: daily
     time: "08:00"
-    timezone: America/New_York
+    timezone: Europe/London
   open-pull-requests-limit: 10
