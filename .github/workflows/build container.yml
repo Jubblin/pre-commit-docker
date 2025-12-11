@@ -29,13 +29,19 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      - id: lower-repo
+        name: Repository to lowercase
+        run: |
+          echo "repository=${GITHUB_REPOSITORY@L}" >> $GITHUB_OUTPUT
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
           context: .
           push: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
           tags: |
-            ghcr.io/jubblin/pre-commit-docker:latest
-            ghcr.io/jubblin/pre-commit-docker:${{ github.sha }}
+            ghcr.io/${{ steps.lower-repo.outputs.repository }}:latest
+            ghcr.io/${{ steps.lower-repo.outputs.repository }}:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
